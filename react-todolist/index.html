@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+    <style>
+      .todoList{
+        padding:40px;
+      }
+      button{
+        margin-left:20px;
+      }
+      li{
+        margin-top:10px;
+        list-style:none;
+      }
+    </style>
+</head>
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+        class Com extends React.Component{
+          constructor(props){
+            super(props)
+            this.state={
+              list:[]
+            }
+          }
+          addData=(e)=>{
+            const temp={
+              title:this.refs['title'].value,
+              checked:false
+            }
+            const list=this.state.list
+            list.push(temp)
+            this.setState({
+              list:list
+            })
+            this.refs['title'].value=''
+          }
+          addByEnter=(e)=>{
+            if(e.keyCode===13){
+              const temp=
+              {
+                title:this.refs['title'].value,
+                checked:false
+              }
+              const list=this.state.list
+              list.push(temp)
+              this.setState({
+                list:list
+            })
+            this.refs['title'].value=''
+            }
+          }
+          removeData=index=>{
+            const list=this.state.list
+            list.splice(index,1)
+            this.setState({
+              list:list
+            })
+          }
+          changeChecked=index=>{
+            const list=this.state.list
+            list[index].checked=!list[index].checked
+            this.setState({
+              list:list
+            })
+          }
+          render(){
+            return(
+              <div className="todoList">
+                <h3>请输入代办事项</h3>
+                <div className="row1">
+                  <input ref="title" onKeyUp={this.addByEnter}/>
+                  <button onClick={this.addData}>增加</button>
+                </div>
+                <h3>未完成</h3>
+                <ul>
+                {
+                  this.state.list.map((value,key)=>{
+                    if(!value.checked){
+                      return (<li key={key}>
+                                <input type="checkbox" checked={value.checked} onChange={this.changeChecked.bind(this,key)}/>
+                                {value.title}
+                                <button onClick={this.removeData.bind(this,key)}>删除</button>
+                              </li>)
+                    }
+                    return ''
+                  })
+                }
+                </ul>
+                <h3>已完成</h3>
+                <ul>
+                {
+                  this.state.list.map((value,key)=>{
+                    if(value.checked){
+                      return (<li key={key}>
+                                <input type="checkbox" checked={value.checked} onChange={this.changeChecked.bind(this,key)}/>
+                                {value.title}
+                                <button onClick={this.removeData.bind(this,key)}>删除</button>
+                              </li>)
+                    }
+                    return ''
+                  })
+                }
+                </ul>
+              </div>
+            )
+          }
+        }
+        ReactDOM.render(<Com/>,document.getElementById('example')) 
+    </script>
+</body>
+</html>
